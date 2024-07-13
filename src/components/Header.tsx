@@ -65,6 +65,8 @@ const Header = () => {
     } finally {
       setLoading(false);
     }
+
+    if (!loading) router.push('/star/new');
   };
   return (
     <HeaderContainer>
