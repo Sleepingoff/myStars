@@ -1,9 +1,10 @@
-import { ReactNode } from 'react';
+import { MouseEventHandler, ReactNode } from 'react';
 import styled, { CSSProperties } from 'styled-components';
 interface CardProps {
   children: ReactNode;
   title?: string;
   style?: CSSProperties;
+  onClick?: MouseEventHandler;
 }
 const CustomCard = styled.div`
   position: relative;
@@ -23,9 +24,9 @@ const CardTitle = styled.span`
   padding: 0.5em 1em;
 `;
 
-const Card = ({ children, style, title }: CardProps) => {
+const Card = ({ children, style, title, onClick }: CardProps) => {
   return (
-    <CustomCard style={style}>
+    <CustomCard style={style} onClick={onClick}>
       {title && <CardTitle>{title}</CardTitle>}
       {children}
     </CustomCard>

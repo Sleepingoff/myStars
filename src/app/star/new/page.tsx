@@ -27,7 +27,7 @@ export interface StarData {
   schedule: string;
   problem: string;
   objective: string;
-  keyResults: string[];
+  keyResults: [{ id: number; contents: string }];
   results: string;
   success: number;
   createdAt: Timestamp;
@@ -94,9 +94,10 @@ const NewStarPage = () => {
         userID: user.uid,
         createdAt: serverTimestamp(),
       };
-      await addDoc(collection(db, 'stars', user.uid, 'my'), newStar);
+      const collecitonRef = collection(db, 'stars', user.uid, 'my');
+      await addDoc(collecitonRef, newStar);
       alert('STAR 기록이 저장되었습니다.');
-      router.push(`/star/my/${user.uid}`);
+      router.push(`/star/${user.uid}/${collecitonRef.id}`);
     } catch (error) {
       alert('STAR 기록에 실패했습니다. 잠시후 다시시도해주세요');
       console.log(error);

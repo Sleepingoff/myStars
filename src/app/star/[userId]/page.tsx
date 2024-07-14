@@ -1,25 +1,18 @@
 'use client';
 
 import { usePathname, useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import {
-  collection,
-  doc,
-  DocumentData,
-  getDoc,
-  getDocs,
-  query,
-  where,
-} from 'firebase/firestore';
+import { MouseEventHandler, ReactNode, useEffect, useState } from 'react';
+import { DocumentData } from 'firebase/firestore';
 import styled from 'styled-components';
 import { auth, db } from '@/firebase/firebaseConfig';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import { getUserStars } from '@/utils/getUserStars';
-import { StarData } from '../../new/page';
 import Card from '@/components/Card';
 import ScheduleInput from '@/components/star/ScheduleInput';
 import GoogleCalendar from '@/components/star/GoogleCalendar';
 import Schedule from '@/components/Schedule';
+import Link from 'next/link';
+import { StarData } from '../new/page';
 
 const Container = styled.div`
   padding: 20px;
@@ -33,30 +26,35 @@ const Title = styled.h1`
 `;
 
 const StarPage = () => {
-  const pathname = usePathname().split('/')[2];
+  const router = useRouter();
   const [stars, setStars] = useState<DocumentData>();
-
+  const user = auth.currentUser;
   useEffect(() => {
-    if (pathname) {
-      const user = auth.currentUser;
-      if (!user) throw 'fail to get user';
-      getUserStars(user, db).then((res) => {
-        setStars(res);
-      });
-    }
-  }, [pathname]);
+    if (!user) throw 'fail to get user';
+    getUserStars(user, db).then((res) => {
+      setStars(res);
+    });
+  }, []);
 
-  // console.log(star);
   if (!stars) {
     return <p>Loading...</p>;
   }
+  const handleClickCard = (id: string) => {
+    if (!user) return;
+    router.push(`/star/${user.uid}/${id}`);
+  };
 
   return (
     <ProtectedRoute>
       <Container>
         <Title>STAR Details</Title>
         {stars.map((star: StarData) => (
-          <Card key={star.id} title="일정" style={{ flexDirection: 'column' }}>
+          <Card
+            onClick={(e) => handleClickCard(star.id)}
+            title="일정"
+            style={{ flexDirection: 'column' }}
+            key={star.id}
+          >
             <Schedule date={star.createdAt} schedule={star.schedule} />
           </Card>
         ))}

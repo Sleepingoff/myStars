@@ -73,7 +73,9 @@ const Header = () => {
       <Link href="/">My STARs</Link>
       {user ? (
         <UserInfo>
-          <UserName>{user.displayName}</UserName>
+          <Link href={`/star/${user.uid}`}>
+            <UserName>{user.displayName}</UserName>
+          </Link>
           <Button onClick={handleLogout}>Logout</Button>
         </UserInfo>
       ) : (
