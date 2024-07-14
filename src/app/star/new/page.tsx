@@ -12,23 +12,25 @@ import { auth, db } from '@/firebase/firebaseConfig';
 import {
   addDoc,
   collection,
-  doc,
+  Firestore,
   serverTimestamp,
-  setDoc,
-} from 'firebase/firestore/lite';
+  Timestamp,
+} from 'firebase/firestore';
 import { useState } from 'react';
 
 import styled from 'styled-components';
 import SuccessMeter from '@/components/star/SuccessMeter';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import { useRouter } from 'next/navigation';
-interface StarData {
+export interface StarData {
+  id: string;
   schedule: string;
   problem: string;
   objective: string;
   keyResults: string[];
   results: string;
   success: number;
+  createdAt: Timestamp;
 }
 const Container = styled.div`
   padding: 20px;
@@ -92,10 +94,9 @@ const NewStarPage = () => {
         userID: user.uid,
         createdAt: serverTimestamp(),
       };
-
-      const collectionRef = await addDoc(collection(db, 'stars'), newStar);
+      await addDoc(collection(db, 'stars', user.uid, 'my'), newStar);
       alert('STAR 기록이 저장되었습니다.');
-      router.push(`/${collectionRef.id}`);
+      router.push(`/star/my/${user.uid}`);
     } catch (error) {
       alert('STAR 기록에 실패했습니다. 잠시후 다시시도해주세요');
       console.log(error);
