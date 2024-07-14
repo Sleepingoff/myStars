@@ -55,7 +55,6 @@ const StarDetailsPage = () => {
   if (!star) {
     return <p>loadings...</p>;
   }
-  console.log(star);
   return (
     <Container>
       <Title>내 STAR 기록</Title>
