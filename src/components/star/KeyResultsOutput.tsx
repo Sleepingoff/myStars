@@ -1,3 +1,5 @@
+'use client';
+
 import styled from 'styled-components';
 
 export type ContentsType = { id: number; contents: string };

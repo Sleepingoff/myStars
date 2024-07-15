@@ -30,19 +30,6 @@ const Description = styled.p`
   line-height: 1.5;
 `;
 
-const Button = styled.button`
-  padding: 10px 20px;
-  font-size: 1em;
-  color: white;
-  background-color: #4285f4;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  &:hover {
-    background-color: #357ae8;
-  }
-`;
-
 const HomePage = () => {
   return (
     <Container>

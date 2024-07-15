@@ -1,3 +1,5 @@
+'use client';
+
 import { MouseEventHandler, ReactNode } from 'react';
 import styled, { CSSProperties } from 'styled-components';
 interface CardProps {

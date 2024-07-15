@@ -1,11 +1,7 @@
 import type { Metadata } from 'next';
 
-import { Inter } from 'next/font/google';
-import GlobalStyles from '@/styles/GlobalStyle';
 import Header from '@/components/Header';
-import ClientProvider from '@/components/ClientProvier';
-
-const inter = Inter({ subsets: ['latin'] });
+import Providers from '@/app/lib/Providers';
 
 export const metadata: Metadata = {
   title: 'My STARs',
@@ -14,19 +10,18 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <>
-      <GlobalStyles />
       <html lang="ko">
-        <ClientProvider>
-          <body className={inter.className}>
-            <Header />
-            {children}
-          </body>
-        </ClientProvider>
+        <body>
+          <Header />
+          <Providers>
+            <>{children}</>
+          </Providers>
+        </body>
       </html>
     </>
   );

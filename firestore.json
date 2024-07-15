@@ -1,0 +1,12 @@
+{
+  "fieldOverrides": [],
+  "hosting": {
+    "site": "mystars",
+    "public": "public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}

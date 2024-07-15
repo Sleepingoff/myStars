@@ -1,9 +1,11 @@
+'use client';
+
 import { formatDate } from '@/utils/formatDate';
 import { Timestamp } from 'firebase/firestore';
 import styled from 'styled-components';
 
 interface ScheduleProps {
-  date: Timestamp;
+  date: string;
   schedule: string;
 }
 
@@ -24,12 +26,9 @@ const DateComp = styled.p`
 `;
 
 const Schedule = ({ date, schedule }: ScheduleProps) => {
-  const serverDate = new Timestamp(date.seconds, date.nanoseconds).toDate();
-  const currentDate = formatDate(serverDate);
-
   return (
     <Container>
-      <DateComp>{currentDate}</DateComp>
+      <DateComp>{date}</DateComp>
       <span>{schedule}</span>
     </Container>
   );
