@@ -9,15 +9,28 @@ import { collection, doc, getDoc, getDocs, query } from 'firebase/firestore';
 import { StarData } from '../../new/page';
 
 export const generateStaticParams = async () => {
-  const starsSnapshot = await getDocs(collection(db, 'stars'));
-  const paths = starsSnapshot.docs.map((doc) => {
-    return {
-      params: {
-        userid: doc.id,
-      },
-    };
-  });
-  return paths;
+  try {
+    const starsSnapshot = await getDocs(collection(db, 'stars'));
+    const paths = starsSnapshot.docs.map((doc) => {
+      return doc.id;
+    });
+
+    const userStarSnapshot = paths.map(async (path) => {
+      const snapshot = await getDocs(collection(db, 'stars', path, 'my'));
+      return snapshot.docs.map((doc) => {
+        return {
+          params: {
+            id: doc.id,
+            userid: path,
+          },
+        };
+      });
+    });
+    return userStarSnapshot;
+  } catch (err) {
+    console.log(err);
+    return [];
+  }
 };
 const getUserStar = async (userid: string, id: string) => {
   const userStarDoc = doc(db, 'stars', userid, 'my', id);
