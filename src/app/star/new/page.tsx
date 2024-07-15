@@ -44,6 +44,7 @@ const Title = styled.h1`
 
 const FlexBox = styled.div`
   display: flex;
+  flex-wrap: wrap;
   width: 100%;
   & > :last-child {
     flex-basis: 70%;
@@ -95,9 +96,9 @@ const NewStarPage = () => {
         createdAt: serverTimestamp(),
       };
       const collecitonRef = collection(db, 'stars', user.uid, 'my');
-      await addDoc(collecitonRef, newStar);
+      const docRef = await addDoc(collecitonRef, newStar);
       alert('STAR 기록이 저장되었습니다.');
-      router.push(`/star/${user.uid}`);
+      router.push(`/star/${user.uid}/${docRef.id}`);
     } catch (error) {
       alert('STAR 기록에 실패했습니다. 잠시후 다시시도해주세요');
       console.log(error);

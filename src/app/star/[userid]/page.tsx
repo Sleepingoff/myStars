@@ -1,4 +1,10 @@
-import { collection, getDocs, query, Timestamp } from 'firebase/firestore';
+import {
+  collection,
+  getDocs,
+  orderBy,
+  query,
+  Timestamp,
+} from 'firebase/firestore';
 import { auth, db } from '@/firebase/firebaseConfig';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import Card from '@/components/Card';
@@ -27,7 +33,7 @@ export const generateStaticParams = async () => {
 
 const getUserStars = async (userid: string) => {
   const userStarsCollection = collection(db, 'stars', userid, 'my');
-  const q = query(userStarsCollection);
+  const q = query(userStarsCollection, orderBy('createdAt'));
   const querySnapshot = await getDocs(q);
   const stars = querySnapshot.docs.map((doc) => {
     const data = doc.data();
