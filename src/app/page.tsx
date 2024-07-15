@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -50,6 +51,7 @@ const HomePage = () => {
         STAR 기법은 경험과 성과를 효과적으로 전달하는 강력한 도구입니다. Google
         캘린더와 연동하여 성과를 추적하고 다른 사람들과 공유할 수 있습니다.
       </Description>
+      <Link href={'/star/new'}>새로운 STAR 기록하기</Link>
     </Container>
   );
 };
