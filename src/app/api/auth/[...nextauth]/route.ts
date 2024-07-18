@@ -9,7 +9,7 @@ const handler = NextAuth({
       authorization: {
         params: {
           response_type: 'code',
-          redirect_uri: 'http://localhost:3000/api/auth/callback/google',
+          redirect_uri: `${process.env.NEXTAUTH_URL}/api/auth/callback/google`,
         },
       },
     }),
