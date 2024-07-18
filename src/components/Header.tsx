@@ -9,6 +9,8 @@ import { auth } from '@/firebase/firebaseConfig';
 import Button from './Button';
 import Link from 'next/link';
 import { FirebaseError } from 'firebase/app';
+import { SessionProvider, signIn, signOut, useSession } from 'next-auth/react';
+import { DefaultSession, Session } from 'next-auth';
 
 const HeaderContainer = styled.header`
   display: flex;
@@ -28,58 +30,30 @@ const UserName = styled.span`
 `;
 
 const Header = () => {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(false);
+  const { data: session, status } = useSession();
+
   const router = useRouter();
 
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
-        setUser(user);
-      } else {
-        setUser(null);
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
+  console.log(session, status);
 
   const handleLogout = async () => {
-    await auth.signOut();
+    signOut();
     router.push('/');
   };
 
-  const handleLogin = async () => {
-    if (loading) return;
-
-    setLoading(true);
-    const provider = new GoogleAuthProvider();
-
-    try {
-      await signInWithPopup(auth, provider);
-    } catch (error) {
-      const firebaseError = error as FirebaseError;
-      if (firebaseError.code !== 'auth/cancelled-popup-request') {
-        console.log(firebaseError);
-      }
-    } finally {
-      setLoading(false);
-    }
-
-    if (!loading) router.push('/star/new');
-  };
   return (
     <HeaderContainer>
       <Link href="/">My STARs</Link>
-      {user ? (
+
+      {session?.user ? (
         <UserInfo>
-          <Link href={`/star/${user.uid}`}>
-            <UserName>{user.displayName}</UserName>
+          <Link href={`/star/${session.user.name}`}>
+            <UserName>{session.user.name}</UserName>
           </Link>
           <Button onClick={handleLogout}>Logout</Button>
         </UserInfo>
       ) : (
-        <Button onClick={handleLogin}>Login</Button>
+        <Button onClick={() => signIn('google')}>google login</Button>
       )}
     </HeaderContainer>
   );

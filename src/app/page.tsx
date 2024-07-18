@@ -1,6 +1,10 @@
 'use client';
 
+import Button from '@/components/Button';
+import { auth } from '@/firebase/firebaseConfig';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { MouseEventHandler } from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -32,6 +36,15 @@ const Description = styled.p`
 `;
 
 const HomePage = () => {
+  const router = useRouter();
+  const handleClickNewStar: MouseEventHandler = () => {
+    const user = auth.currentUser;
+    if (!user) {
+      alert('로그인 후 이용해주세요');
+    } else {
+      router.push('/star/new');
+    }
+  };
   return (
     <Container>
       <Title>My STARs에 오신 것을 환영합니다</Title>
@@ -51,7 +64,7 @@ const HomePage = () => {
         STAR 기법은 경험과 성과를 효과적으로 전달하는 강력한 도구입니다. Google
         캘린더와 연동하여 성과를 추적하고 다른 사람들과 공유할 수 있습니다.
       </Description>
-      <Link href={'/star/new'}>새로운 STAR 기록하기</Link>
+      <Button onClick={handleClickNewStar}>새로운 STAR 기록하기</Button>
     </Container>
   );
 };
